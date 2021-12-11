@@ -1,13 +1,13 @@
 --[[
 ScriptName:Adapitive Subtitles
-Version 0.2.0
+Version 0.2.1
 Put this script on/将此脚本放在：
 StarterPlayer\StarterCharacterScript |-|-or-|-| StarterPlayer\StarterPlayerScript
 
 Made by Aidaren - 究极挨打人
 QQ:3026297142
 --]]
-local DisapperTime = 4 --<字幕开始消失的时间>--
+local DisapperTime = 3 --<字幕开始消失的时间>--
 local TweenTime = 0.5 --<字幕彻底消失的时间>--
 
 local function CreateSubtitle(Text)
@@ -103,10 +103,12 @@ local function CreateSubtitle(Text)
 
 	--<创建Tween>--
 	local SubtitlesInfo = TweenInfo.new(TweenTime , Enum.EasingStyle.Linear , Enum.EasingDirection.Out , 0 , false)
-	local TweenAnimation = Tween:Create(GuiFrame , SubtitlesInfo , {Size = UDim2.new(GuiFrame.Size.X,0,0,0)})
-
-	TweenAnimation:Play()
-
+	local FrameAnimation = Tween:Create(GuiFrame , SubtitlesInfo , {Size = UDim2.new(GuiFrame.Size.X,0,0,0)})
+	local TransparensyAnimation = Tween:Create(GuiText , SubtitlesInfo , {TextTransparency = 1})
+	
+	FrameAnimation:Play()
+	TransparensyAnimation:Play()
+	
 	wait(TweenTime)
 
 	Gui:Destroy()
