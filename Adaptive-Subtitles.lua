@@ -9,7 +9,8 @@ QQ:3026297142
 local DisapperTime = 15 --<字幕开始消失的时间>--
 local TweenTime = 0.1 --<字幕彻底消失的时间>--
 local MoveTime = 0.08 --<字幕移动的时间>--
-local PrintMessage = true
+local PrintMessage = false
+local DevMode = false
 
 local function CreateSubtitle(Text)
 	
@@ -226,6 +227,11 @@ end
 local Player = game:GetService("Players")
 local LocalPlayer = Player.LocalPlayer
 
-LocalPlayer.Chatted:Connect(function(Message)
-	CreateSubtitle(Message)
-end)
+if DevMode == true then
+	LocalPlayer.Chatted:Connect(function(Message)
+		CreateSubtitle(Message)
+	end)
+else
+	CreateSubtitle() --|输入你想出现的文字 / Type your message here|--
+end
+
