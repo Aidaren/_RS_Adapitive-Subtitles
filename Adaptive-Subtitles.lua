@@ -1,6 +1,6 @@
 --[[
 ScriptName:Adapitive Subtitles
-Version 1.0.0
+Version 1.0.1
 Put this script on/将此脚本放在：
 StarterPlayer\StarterCharacterScript |-|-or-|-| StarterPlayer\StarterPlayerScript
 Made by Aidaren - 究极挨打人
