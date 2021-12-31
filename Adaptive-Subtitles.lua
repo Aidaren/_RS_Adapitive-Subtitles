@@ -1,12 +1,12 @@
-function AdaptiveSubtitle(Text , DisapperTime , TweenTime , MoveTime , PrintMessage , DevMode)
 --[[
 ScriptName:Adapitive Subtitles
 Version 1.1.0
-Put this script on/将此脚本放在：
-StarterPlayer\StarterCharacterScript |-|-or-|-| StarterPlayer\StarterPlayerScript
+Put this script on/将此脚本放在：ReplicatedStorage
 Made by Aidaren - 究极挨打人
 QQ:3026297142
 --]]
+
+function AdaptiveSubtitle(Text , DisapperTime , TweenTime , MoveTime , PrintMessage , DevMode)
 	local G_Text --<字幕文本>--
 	local G_DisapperTime --<字幕开始消失的时间-默认3>--
 	local G_TweenTime --<字幕彻底消失的时间-默认0.1>--
