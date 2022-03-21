@@ -6,7 +6,6 @@ Made by Aidaren - 究极挨打人
 QQ:3026297142
 --]]
 function AdaptiveSubtitle(Text , AppearTime , KeepTime , DisappearTime , MoveTime , PrintMessage , DevMode)
-	print("1")
 	local G_Text --<字幕文本>--
 	local G_AppearTime --|字幕出现动画播放的时间-默认0.1|--
 	local G_keepTime --<字幕存在的时间-默认3>--
@@ -229,7 +228,7 @@ function AdaptiveSubtitle(Text , AppearTime , KeepTime , DisappearTime , MoveTim
 
 	local ASCFinal = AbsoluteScalConsult1 + AbsoluteScalLost --|求和|--
 
-	local FrameSizeTween = Tween:Create(GuiFrame ,SubtitleAppearInfo , {Size = UDim2.new(math.max(MinX , ASCFinal), 0 , 0.045 , 0)}) --|出现动画,根据X画幅动态改变|--
+	local FrameSizeTween = Tween:Create(GuiFrame ,SubtitleAppearInfo , {Size = UDim2.new(math.max(MinX , ASCFinal * 60), 0 , 0.045 , 0)}) --|出现动画,根据X画幅动态改变|--
 	FrameSizeTween:Play()
 	
 	Gui.Enabled = true
@@ -260,19 +259,5 @@ function AdaptiveSubtitle(Text , AppearTime , KeepTime , DisappearTime , MoveTim
 	Gui:Destroy()
 
 end
-
-	--[[
-	--<测试>--
-	local Player = game:GetService("Players")
-	local LocalPlayer = Player.LocalPlayer
-
-	if G_DevMode == true then
-		LocalPlayer.Chatted:Connect(function(Message)
-			CreateSubtitle(Message)
-		end)
-	else
-		CreateSubtitle(Text) --|输入你想出现的文字 / Type your message here|--
-	end
-	--]]
 
 return AdaptiveSubtitle
