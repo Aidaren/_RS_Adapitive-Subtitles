@@ -21,4 +21,6 @@ The script is almost finished, currently you can use the function by calling thi
 * **Height customization**
 
 ### **Made By Aidaren - 究极挨打人**
-### **联系QQ:3026297142**
+### **QQ:026297142**
+### **微信:AidarenADR**
+### **Discord:Aidaren#5009**
