@@ -1,53 +1,18 @@
 --[[
 ScriptName:Adapitive Subtitles
-Version 1.2.0
+Version 1.3.0
 Put this script on/将此脚本放在：ReplicatedStorage
 Made by Aidaren - 究极挨打人
 QQ:3026297142
 --]]
 function AdaptiveSubtitle(Text , AppearTime , KeepTime , DisappearTime , MoveTime , PrintMessage , DevMode)
-	local G_Text --<字幕文本>--
-	local G_AppearTime --|字幕出现动画播放的时间-默认0.1|--
-	local G_keepTime --<字幕存在的时间-默认3>--
-	local G_DisappearTime --<字幕彻底消失的时间-默认0.1>--
-	local G_MoveTime --<字幕移动的时间-默认0.08>--
-	local G_PrintMessage --<是否要打印消息-默认false>--
-	local G_DevMode --<是否要开启开发者调试模式-默认false>--
-	if Text then
-		G_Text = Text
-	else
-		G_Text = "You must give a Text to the function"
-	end
-	if AppearTime then
-		G_AppearTime = AppearTime
-	else
-		G_AppearTime = 0.1
-	end
-	if KeepTime then
-		G_keepTime = KeepTime
-	else
-		G_keepTime = 3
-	end
-	if DisappearTime then
-		G_DisappearTime = DisappearTime
-	else
-		G_DisappearTime = 0.1
-	end
-	if MoveTime then
-		G_MoveTime = MoveTime
-	else
-		G_MoveTime = 0.08
-	end
-	if PrintMessage then
-		G_PrintMessage = PrintMessage
-	else
-		G_PrintMessage = false
-	end
-	if G_DevMode then
-		G_DevMode = DevMode
-	else
-		G_PrintMessage = false
-	end
+	local G_Text = Text or "You must give a Text to the function" --<字幕文本>--
+	local G_AppearTime = AppearTime or 0.1 --|字幕出现动画播放的时间-默认0.1|--
+	local G_keepTime = KeepTime or 3--<字幕存在的时间-默认3>--
+	local G_DisappearTime = DisappearTime or 0.1--<字幕彻底消失的时间-默认0.1>--
+	local G_MoveTime = MoveTime or 0.08--<字幕移动的时间-默认0.08>--
+	local G_PrintMessage = PrintMessage or false--<是否要打印消息-默认false>--
+	local G_DevMode = DevMode or false--<是否要开启开发者调试模式-默认false>--
 
 	--<获取本地玩家>--
 	local Player = game:GetService("Players")
@@ -55,6 +20,7 @@ function AdaptiveSubtitle(Text , AppearTime , KeepTime , DisappearTime , MoveTim
 
 	--<获取服务>--
 	local Tween = game:GetService("TweenService")
+	local TextService = game:GetService("TextService")
 
 	--<创建Tween>--
 	local SubtitleAppearInfo = TweenInfo.new(G_AppearTime , Enum.EasingStyle.Linear , Enum.EasingDirection.Out , 0 , false)
@@ -65,7 +31,28 @@ function AdaptiveSubtitle(Text , AppearTime , KeepTime , DisappearTime , MoveTim
 	local Gui = Instance.new("ScreenGui" , LocalPlayer:WaitForChild("PlayerGui"))
 	local GuiFrame = Instance.new("Frame" , Gui)
 	local UiCornerForFrame = Instance.new("UICorner" , GuiFrame) --|UI圆角|--
-
+	
+	--<测量文字长度Frame>--
+	local TextGui = Instance.new("ScreenGui" , LocalPlayer:WaitForChild("PlayerGui"))
+	TextGui.Name = "TextGui"
+	
+	local TextFrame = Instance.new("Frame")
+	TextFrame.Name = "TextSizeFrame"
+	TextFrame.Parent = TextGui
+	TextFrame.AnchorPoint = Vector2.new(.5,.5)
+	TextFrame.Position = UDim2.new(1,0,10,0)
+	TextFrame.Size = UDim2.new(1,0,1,0)
+	
+	local TextTest = Instance.new("TextLabel")
+	TextTest.Parent = TextFrame
+	TextTest.AnchorPoint = Vector2.new(.5,.5)
+	TextTest.Text = G_Text
+	--local AbsoluteScale = TextTest.TextBounds.X
+	
+	local TextService = game:GetService("TextService")
+	
+	local AbsoluteScale = TextService:GetTextSize(G_Text , 24 , "GothamBold" , Vector2.new(math.huge , math.huge)).X
+	
 	--<判断值>--
 	if LocalPlayer:FindFirstChild("PlayerGui"):FindFirstChild("CheckFolder") then
 		--<如果已经有文件夹则不新建>--
@@ -184,7 +171,7 @@ function AdaptiveSubtitle(Text , AppearTime , KeepTime , DisappearTime , MoveTim
 	GuiText.Size = UDim2.new(1,0,1,0)
 	GuiText.ZIndex = 10
 	GuiText.Font = Enum.Font.GothamBold
-	GuiText.Text = Text
+	GuiText.Text = G_Text
 	GuiText.TextSize = 24
 	GuiText.TextColor3=Color3.new(240, 240, 240)
 	GuiText.TextScaled = true
@@ -207,28 +194,10 @@ function AdaptiveSubtitle(Text , AppearTime , KeepTime , DisappearTime , MoveTim
 	GuiBackGround.SliceScale = 1
 	GuiBackGround.TileSize = UDim2.new(0, 30,0, 30)
 	GuiBackGround.ImageTransparency = 0.975
-
-	local AbsoluteScale = GuiText.TextBounds.X
-
-	local AbsoluteScalLost = math.fmod(AbsoluteScale , 8) --|求余数并加上对应缩放比例|--
-	if AbsoluteScalLost == 1 then
-		AbsoluteScalLost = 0.001
-	elseif AbsoluteScalLost == 2 or 3 then
-		AbsoluteScalLost = 0.002
-	elseif AbsoluteScalLost == 4 or 5 then
-		AbsoluteScalLost = 0.003
-	elseif AbsoluteScalLost ==6 then
-		AbsoluteScalLost = 0.004
-	elseif AbsoluteScalLost == 7 or 8 then
-		AbsoluteScalLost = 0.005
-	end
-
-	local AbsoluteScalConsult1 = math.modf(AbsoluteScale/8) --|求大小并乘以总数|--
-	AbsoluteScalConsult1 = AbsoluteScalConsult1 * 0.004
-
-	local ASCFinal = AbsoluteScalConsult1 + AbsoluteScalLost --|求和|--
-
-	local FrameSizeTween = Tween:Create(GuiFrame ,SubtitleAppearInfo , {Size = UDim2.new(math.max(MinX , ASCFinal * 60), 0 , 0.045 , 0)}) --|出现动画,根据X画幅动态改变|--
+	
+	local Viewport_Size = workspace.CurrentCamera.ViewportSize
+	local ASCFinal = AbsoluteScale/Viewport_Size.X + 0.02
+	local FrameSizeTween = Tween:Create(GuiFrame ,SubtitleAppearInfo , {Size = UDim2.new(math.max(MinX , ASCFinal), 0 , 0.045 , 0)}) --|出现动画,根据X画幅动态改变|--
 	FrameSizeTween:Play()
 	
 	Gui.Enabled = true
