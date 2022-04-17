@@ -1,10 +1,11 @@
 --[[
 ScriptName:Adapitive Subtitles
-Version 1.3.0
+Version 1.3.1
 Put this script on/将此脚本放在：ReplicatedStorage
 Made by Aidaren - 究极挨打人
 QQ:3026297142
 --]]
+
 function AdaptiveSubtitle(Text , AppearTime , KeepTime , DisappearTime , MoveTime , PrintMessage , DevMode)
 	local G_Text = Text or "You must give a Text to the function" --<字幕文本>--
 	local G_AppearTime = AppearTime or 0.1 --|字幕出现动画播放的时间-默认0.1|--
@@ -26,33 +27,33 @@ function AdaptiveSubtitle(Text , AppearTime , KeepTime , DisappearTime , MoveTim
 	local SubtitleAppearInfo = TweenInfo.new(G_AppearTime , Enum.EasingStyle.Linear , Enum.EasingDirection.Out , 0 , false)
 	local SubtitlesDisappearInfo = TweenInfo.new(G_DisappearTime , Enum.EasingStyle.Linear , Enum.EasingDirection.Out , 0 , false)
 	local SubtitleMoveInfo = TweenInfo.new(G_MoveTime , Enum.EasingStyle.Sine , Enum.EasingDirection.Out , 0 , false)
-	
+
 	--<创建字幕GUI>--
 	local Gui = Instance.new("ScreenGui" , LocalPlayer:WaitForChild("PlayerGui"))
 	local GuiFrame = Instance.new("Frame" , Gui)
 	local UiCornerForFrame = Instance.new("UICorner" , GuiFrame) --|UI圆角|--
-	
+
 	--<测量文字长度Frame>--
 	local TextGui = Instance.new("ScreenGui" , LocalPlayer:WaitForChild("PlayerGui"))
 	TextGui.Name = "TextGui"
-	
+
 	local TextFrame = Instance.new("Frame")
 	TextFrame.Name = "TextSizeFrame"
 	TextFrame.Parent = TextGui
 	TextFrame.AnchorPoint = Vector2.new(.5,.5)
 	TextFrame.Position = UDim2.new(1,0,10,0)
 	TextFrame.Size = UDim2.new(1,0,1,0)
-	
+
 	local TextTest = Instance.new("TextLabel")
 	TextTest.Parent = TextFrame
 	TextTest.AnchorPoint = Vector2.new(.5,.5)
 	TextTest.Text = G_Text
 	--local AbsoluteScale = TextTest.TextBounds.X
-	
+
 	local TextService = game:GetService("TextService")
-	
+
 	local AbsoluteScale = TextService:GetTextSize(G_Text , 24 , "GothamBold" , Vector2.new(math.huge , math.huge)).X
-	
+
 	--<判断值>--
 	if LocalPlayer:FindFirstChild("PlayerGui"):FindFirstChild("CheckFolder") then
 		--<如果已经有文件夹则不新建>--
@@ -182,6 +183,7 @@ function AdaptiveSubtitle(Text , AppearTime , KeepTime , DisappearTime , MoveTim
 	GuiFrame.BackgroundColor3 = Color3.new(0, 0, 0)
 	GuiFrame.BackgroundTransparency = 0.45
 	GuiFrame.Position= UDim2.new(0.5,0,0.78,0) --|Frame坐标|--
+	GuiFrame.Size = UDim2.new(0,0,0.045,0)
 
 
 	--<改变Pattern属性>--
@@ -194,12 +196,12 @@ function AdaptiveSubtitle(Text , AppearTime , KeepTime , DisappearTime , MoveTim
 	GuiBackGround.SliceScale = 1
 	GuiBackGround.TileSize = UDim2.new(0, 30,0, 30)
 	GuiBackGround.ImageTransparency = 0.975
-	
+
 	local Viewport_Size = workspace.CurrentCamera.ViewportSize
-	local ASCFinal = AbsoluteScale/Viewport_Size.X + 0.02
+	local ASCFinal = AbsoluteScale/Viewport_Size.X + 0.02 --|文字与边框间距|--
 	local FrameSizeTween = Tween:Create(GuiFrame ,SubtitleAppearInfo , {Size = UDim2.new(math.max(MinX , ASCFinal), 0 , 0.045 , 0)}) --|出现动画,根据X画幅动态改变|--
 	FrameSizeTween:Play()
-	
+
 	Gui.Enabled = true
 
 	--<等待时间>--
