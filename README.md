@@ -1,4 +1,4 @@
-# Adapitive-Subtitles | Version - 1.3.0
+# Adapitive-Subtitles | Version - 1.4.0
 
 ## 中文简介/Chinese Language
 **这个脚本有什么用？目前此脚本功能已基本完成 
